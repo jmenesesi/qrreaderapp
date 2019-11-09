@@ -26,6 +26,9 @@ dependencies:
   qrcode_reader: ^0.4.4
   sqflite: ^1.1.7+2
   path_provider: ^1.4.0
+  url_launcher: ^5.2.5
+  latlong: ^0.6.1
+  flutter_map: ^0.7.3
 
 dev_dependencies:
   flutter_test:

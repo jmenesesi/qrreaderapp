@@ -4,6 +4,9 @@ import 'package:path_provider/path_provider.dart';
 import 'package:qrreaderapp/models/scan_model.dart';
 import 'package:sqflite/sqflite.dart';
 
+
+export 'package:qrreaderapp/models/scan_model.dart';
+
 class DBProvider {
   static Database _database;
 
@@ -61,7 +64,7 @@ class DBProvider {
     return res.isNotEmpty ? ScanModel.fromJson(res.first) : null;
   }
 
-  getAllScans() async {
+  Future<List<ScanModel>> getAllScans() async {
     List<ScanModel> scans = List();
     final db = await database;
     final res = await db.query("Scans");
@@ -76,5 +79,24 @@ class DBProvider {
     final res = await db.rawQuery("SELECT * FROM Scans WHERE tipo='$tipo'");
     scans = res.isNotEmpty ? res.map((c) => ScanModel.fromJson(c)).toList() : [];
     return scans;
+  }
+
+  // Actualizar registro;
+  Future<int> updateScan(ScanModel scan) async {
+    final db = await database;
+    final res = db.update("Scans", scan.toJson(), where: 'id = ?', whereArgs: [scan.id]);
+    return res;
+  }
+
+  Future<int> deleteScan(int id) async {
+    final db = await database;
+    final res = db.delete("Scans", where: 'id = ?', whereArgs: [id]) ;
+    return res;
+  }
+
+  Future<int> deleteAll() async {
+    final db = await database;
+    final res = db.delete("Scans") ;
+    return res;
   }
 }

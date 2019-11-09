@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:qrcode_reader/qrcode_reader.dart';
+import 'package:qrreaderapp/bloc/scans_bloc.dart';
+import 'package:qrreaderapp/models/scan_model.dart';
 import 'package:qrreaderapp/pages/direcciones_page.dart';
 import 'package:qrreaderapp/pages/mapas_page.dart';
-
+import 'package:qrreaderapp/utils/utils.dart' as utils;
 
 class HomePage extends StatefulWidget {
  
@@ -13,6 +17,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int currentIndex = 0;
 
+  final scansBloc = new ScansBloc();
+
    @override
    Widget build(BuildContext context) {
      return Scaffold(
@@ -21,7 +27,7 @@ class _HomePageState extends State<HomePage> {
          actions: <Widget>[
            IconButton(
              icon: Icon(Icons.delete_forever),
-             onPressed: (){},
+             onPressed: scansBloc.borrarTodos,
            )
          ],
        ),
@@ -30,7 +36,7 @@ class _HomePageState extends State<HomePage> {
        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
        floatingActionButton: FloatingActionButton(
          child: Icon(Icons.filter_center_focus),
-         onPressed: _scanQR,
+         onPressed: () =>_scanQR(context),
          backgroundColor: Theme.of(context).primaryColor,
        ),
      );
@@ -65,18 +71,32 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  _scanQR() async {
+  _scanQR(BuildContext context) async {
   //geo:19.3328209,-99.0239552
 
-    String futureString ="";
+    String futureString ="https://jmenesesi.com";
+    /*
     try {
       futureString = await new QRCodeReader().scan();
     } catch (e) {
       futureString = e.toString();
     }
-    print("futureString value: $futureString");
+    print("futureString value: $futureString"); */
     if(futureString != null) {
       print("Hay información");
+      final scan = ScanModel(valor: futureString);
+      scansBloc.agregarScan(scan);
+
+       final scan2 = ScanModel(valor: "geo:19.3328209,-99.0239552");
+      scansBloc.agregarScan(scan2);
+      /*
+      if(Platform.isIOS) {
+         Future.delayed(Duration(milliseconds: 750), () {
+           utils.abrirScan(context, scan);
+         });
+      } else {
+        utils.abrirScan(context, scan);
+      }*/
     }
   }
 }
