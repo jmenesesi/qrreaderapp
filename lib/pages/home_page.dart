@@ -75,28 +75,28 @@ class _HomePageState extends State<HomePage> {
   //geo:19.3328209,-99.0239552
 
     String futureString ="https://jmenesesi.com";
-    /*
+    
     try {
       futureString = await new QRCodeReader().scan();
     } catch (e) {
       futureString = e.toString();
     }
-    print("futureString value: $futureString"); */
+    print("futureString value: $futureString"); 
     if(futureString != null) {
       print("Hay información");
       final scan = ScanModel(valor: futureString);
       scansBloc.agregarScan(scan);
 
-       final scan2 = ScanModel(valor: "geo:19.3328209,-99.0239552");
-      scansBloc.agregarScan(scan2);
-      /*
+      /*final scan2 = ScanModel(valor: "geo:19.3328209,-99.0239552");
+      scansBloc.agregarScan(scan2);*/
+      
       if(Platform.isIOS) {
          Future.delayed(Duration(milliseconds: 750), () {
            utils.abrirScan(context, scan);
          });
       } else {
         utils.abrirScan(context, scan);
-      }*/
+      }
     }
   }
 }
